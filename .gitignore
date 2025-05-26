@@ -1,0 +1,10 @@
+# Rust
+/rust_backend/target/
+**/*.rs.bk
+
+# .NET (C#)
+/C#_frontend/bin/
+/C#_frontend/obj/
+.vs/
+*.user
+*.suo
