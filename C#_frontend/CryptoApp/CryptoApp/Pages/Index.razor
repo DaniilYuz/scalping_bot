@@ -96,6 +96,8 @@
         base.OnInitialized();
     }
 
+    private RusterBot? rusterBot;
+
     private async Task StartBot()
     {
         try
@@ -107,13 +109,13 @@
 
             Logger.LogInformation("🔥 StartBot triggered at {Time}", DateTime.Now);
 
-            // Использование Rust-библиотеки через обёртку Ruster
-            var ruster = new Ruster();
-            long result = ruster.RusterCall(10, 20); // Пример аргументов, подставьте нужные
+            rusterBot = new RusterBot();
 
-            Logger.LogInformation("📊 RusterCall result: {Result}", result);
+            rusterBot.OnDataReceived += OnBotDataReceived;
 
-            if (result == 30)
+            bool started = rusterBot.StartBot("BTCUSDT,ETHUSDT", "AggTrade,Kline");
+
+            if (started)
             {
                 BotConnected = true;
                 StatusMessage = "Бот успешно запущен через Rust библиотеку";
@@ -122,8 +124,8 @@
             else
             {
                 BotConnected = false;
-                StatusMessage = $"Неожиданный результат от Rust: {result}";
-                Logger.LogWarning("⚠️ Unexpected result from Rust: {Result}", result);
+                StatusMessage = $"Не удалось запустить бот: {rusterBot.LastError}";
+                Logger.LogWarning("⚠️ Failed to start bot: {Error}", rusterBot.LastError);
             }
         }
         catch (Exception ex)
@@ -139,6 +141,15 @@
         }
     }
 
+    private void OnBotDataReceived(string jsonData)
+    {
+        // Обновляем UI или внутренние данные из коллбэка
+        // Пример:
+        LastSignal = jsonData;
+
+        // Чтобы обновить UI из не-UI потока, вызываем InvokeAsync
+        InvokeAsync(StateHasChanged);
+    }
 
     private async Task StopBot()
     {
@@ -149,6 +160,13 @@
             StateHasChanged();
 
             Logger.LogInformation("🛑 StopBot triggered at {Time}", DateTime.Now);
+
+            if (rusterBot != null && rusterBot.IsRunning)
+            {
+                rusterBot.StopBot();
+                rusterBot.OnDataReceived -= OnBotDataReceived;
+                rusterBot = null;
+            }
 
             await Task.Delay(500);
 
@@ -167,6 +185,7 @@
             StateHasChanged();
         }
     }
+
 
     private string GetStatusClass() => BotConnected ? "text-success" : "text-danger";
 

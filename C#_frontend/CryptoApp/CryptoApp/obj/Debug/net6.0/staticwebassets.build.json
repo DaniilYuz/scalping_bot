@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vUW4c2J7Hkiq/CKtWVub2ZJPpXCQ6ITKq00iIGgMvvI=",
+  "Hash": "E4zxkOS/dxOjGVJjMZtBwPTftFfbfghkq9Q6dK8n8sk=",
   "Source": "CryptoApp",
   "BasePath": "_content/CryptoApp",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "CryptoApp\\wwwroot",
       "Source": "CryptoApp",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css",
       "SourceId": "CryptoApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "CryptoApp#[.{fingerprint}]?.styles.css",
       "AssetKind": "All",
@@ -35,13 +35,13 @@
       "Integrity": "AdpAyb9iMTHaKOcue1OfVLCiY3VA/suv3xY3dbEP8JU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css"
+      "OriginalItemSpec": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css",
       "SourceId": "CryptoApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "CryptoApp#[.{fingerprint}]!.bundle.scp.css",
       "AssetKind": "All",
@@ -56,13 +56,13 @@
       "Integrity": "AdpAyb9iMTHaKOcue1OfVLCiY3VA/suv3xY3dbEP8JU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/bootstrap/bootstrap.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -80,10 +80,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -101,10 +101,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -122,10 +122,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.eot",
       "AssetKind": "All",
@@ -143,10 +143,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.otf",
       "AssetKind": "All",
@@ -164,10 +164,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.svg",
       "AssetKind": "All",
@@ -185,10 +185,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.ttf",
       "AssetKind": "All",
@@ -206,10 +206,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.woff",
       "AssetKind": "All",
@@ -227,10 +227,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/FONT-LICENSE#[.{fingerprint}]?",
       "AssetKind": "All",
@@ -248,10 +248,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/ICON-LICENSE#[.{fingerprint}]?",
       "AssetKind": "All",
@@ -269,10 +269,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\README.md",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/open-iconic/README#[.{fingerprint}]?.md",
       "AssetKind": "All",
@@ -290,10 +290,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\site.css",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "css/site#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -311,10 +311,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\favicon.ico",
+      "Identity": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\favicon.ico",
       "SourceId": "CryptoApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\",
       "BasePath": "_content/CryptoApp",
       "RelativePath": "favicon#[.{fingerprint}]?.ico",
       "AssetKind": "All",
@@ -335,7 +335,7 @@
   "Endpoints": [
     {
       "Route": "CryptoApp.bundle.scp.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -372,7 +372,7 @@
     },
     {
       "Route": "CryptoApp.jf99me8pba.bundle.scp.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CryptoApp.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -417,7 +417,7 @@
     },
     {
       "Route": "CryptoApp.jf99me8pba.styles.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -462,7 +462,7 @@
     },
     {
       "Route": "CryptoApp.styles.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\CryptoApp.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -499,7 +499,7 @@
     },
     {
       "Route": "css/bootstrap/bootstrap.min.bpk8xqwxhs.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -544,7 +544,7 @@
     },
     {
       "Route": "css/bootstrap/bootstrap.min.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -581,7 +581,7 @@
     },
     {
       "Route": "css/bootstrap/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -626,7 +626,7 @@
     },
     {
       "Route": "css/bootstrap/bootstrap.min.css.map",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -663,7 +663,7 @@
     },
     {
       "Route": "css/open-iconic/font/css/open-iconic-bootstrap.min.cmapd0fi15.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -708,7 +708,7 @@
     },
     {
       "Route": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -745,7 +745,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.0uw8dim9nl.eot",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -790,7 +790,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.eot",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -827,7 +827,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.h4d0pazwgy.woff",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -872,7 +872,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.ll5grcv8wv.ttf",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -917,7 +917,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.otf",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -954,7 +954,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.sjnzgf7e1h.svg",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -999,7 +999,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.svg",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1036,7 +1036,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.ttf",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1073,7 +1073,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.wk8x8xm0ah.otf",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1118,7 +1118,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.woff",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1155,7 +1155,7 @@
     },
     {
       "Route": "css/open-iconic/FONT-LICENSE",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1192,7 +1192,7 @@
     },
     {
       "Route": "css/open-iconic/FONT-LICENSE.48tmkg660f",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1237,7 +1237,7 @@
     },
     {
       "Route": "css/open-iconic/ICON-LICENSE",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1274,7 +1274,7 @@
     },
     {
       "Route": "css/open-iconic/ICON-LICENSE.4dwjve0o0b",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1319,7 +1319,7 @@
     },
     {
       "Route": "css/open-iconic/README.8h4oiah9s0.md",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\README.md",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\README.md",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1364,7 +1364,7 @@
     },
     {
       "Route": "css/open-iconic/README.md",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\README.md",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\open-iconic\\README.md",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1401,7 +1401,7 @@
     },
     {
       "Route": "css/site.1fpfb6x0uo.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\site.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1446,7 +1446,7 @@
     },
     {
       "Route": "css/site.css",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\css\\site.css",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1483,7 +1483,7 @@
     },
     {
       "Route": "favicon.61n19gt1b8.ico",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\favicon.ico",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1528,7 +1528,7 @@
     },
     {
       "Route": "favicon.ico",
-      "AssetFile": "C:\\Users\\georg\\source\\repos\\CryptoApp\\CryptoApp\\wwwroot\\favicon.ico",
+      "AssetFile": "C:\\Users\\georg\\Desktop\\Scalping_bot\\C#_frontend\\CryptoApp\\CryptoApp\\wwwroot\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
