@@ -14,6 +14,7 @@ use binance::websockets::{WebSockets, WebsocketEvent};
 use std::sync::atomic::Ordering;
 use binance::model::{AggTrade, DayTickerEvent};
 use tokio::sync::mpsc;
+use serde::Serialize;
 use tokio::sync::mpsc::{Sender, Receiver};
 use tokio::time::{Instant, Sleep};
 use tokio_tungstenite::tungstenite::Message;
@@ -160,58 +161,64 @@ impl Strategy  for MomentumStrategy {
     }
 }
 */
-enum StreamData {
+#[derive(Serialize, Clone)]
+pub enum StreamData {
     AggTrade(AggTradeData),
     Kline(KlineData),
     DepthOrderBook(OrderBookData),
     BookTicker(BookTickerData),
 }
-#[derive(Clone)]
-struct AggTradeData {
-    symbol: String,
-    average_price: f64,
-    current_close: f64,
-}
-#[derive(Clone)]
-struct KlineData {
-    symbol: String,
-    open: f64,
-    close: f64,
-    high: f64,
-    low: f64,
-    volume: f64,
-    taker_buy_base_asset_volume: f64,
-    taker_buy_quote_asset_volume: f64,
-    is_final_bar: bool,
-}
-#[derive(Clone,Debug)]
-struct OrderBookEntry {
-    price: f64,
-    quantity: f64,
+
+#[derive(Serialize, Clone)]
+pub struct AggTradeData {
+    pub symbol: String,
+    pub average_price: f64,
+    pub current_close: f64,
 }
 
-#[derive(Clone)]
-struct OrderBookData {
-    symbol: String,
-    bids: Vec<OrderBookEntry>,
-    asks: Vec<OrderBookEntry>,
-    first_update_id: u64,
-    final_update_id: u64,
+#[derive(Serialize, Clone)]
+pub struct KlineData {
+    pub symbol: String,
+    pub open: f64,
+    pub close: f64,
+    pub high: f64,
+    pub low: f64,
+    pub volume: f64,
+    pub taker_buy_base_asset_volume: f64,
+    pub taker_buy_quote_asset_volume: f64,
+    pub is_final_bar: bool,
 }
-#[derive(Clone)]
-struct BookTickerData {
-    symbol: String,
-    best_bid: f64,
-    best_bid_qty: f64,
-    best_ask: f64,
-    best_ask_qty: f64,
+
+#[derive(Serialize, Clone, Debug)]
+pub struct OrderBookEntry {
+    pub price: f64,
+    pub quantity: f64,
 }
-#[derive(Clone)]
-struct MarketSnapshot {
-    last_agg_trade: Option<AggTradeData>,
-    last_kline: Option<KlineData>,
-    last_order_book: Option<OrderBookData>,
-    last_book_ticker: Option<BookTickerData>,
+
+#[derive(Serialize, Clone)]
+pub struct OrderBookData {
+    pub symbol: String,
+    pub bids: Vec<OrderBookEntry>,
+    pub asks: Vec<OrderBookEntry>,
+    pub first_update_id: u64,
+    pub final_update_id: u64,
+}
+
+#[derive(Serialize, Clone)]
+pub struct BookTickerData {
+    pub symbol: String,
+    pub best_bid: f64,
+    pub best_bid_qty: f64,
+    pub best_ask: f64,
+    pub best_ask_qty: f64,
+}
+
+#[derive(Serialize, Clone)]
+pub struct MarketSnapshot {
+    pub last_agg_trade: Option<AggTradeData>,
+    pub last_kline: Option<KlineData>,
+    pub last_order_book: Option<OrderBookData>,
+    pub last_book_ticker: Option<BookTickerData>,
 }
 
 fn handle_event_AggTrade(event: &WebsocketEvent, sender: &mpsc::Sender<StreamData>, coinName: &Vec<String>) -> Result<(), ()> {
@@ -425,7 +432,7 @@ fn handle_event_BookTicker(event: &WebsocketEvent, sender: &mpsc::Sender<StreamD
         _=> Ok(())
     }
 }
-async fn snapshotUpdater (receiver: &mut mpsc::Receiver<StreamData>, market_snapshot: &Arc<RwLock<MarketSnapshot>>) {
+async fn snapshotUpdater (receiver: &mut mpsc::Receiver<StreamData>, market_snapshot: &Arc<RwLock<MarketSnapshot>>, callback: DataCallback) {
     print!("[TEST] snapshotUpdater start");
     while let Some(msg) = receiver.recv().await {
         {
@@ -433,13 +440,20 @@ async fn snapshotUpdater (receiver: &mut mpsc::Receiver<StreamData>, market_snap
 
             let mut snapshot = market_snapshot.write().unwrap();
 
-            match msg {
-                StreamData::AggTrade(data) => snapshot.last_agg_trade = Some(data),
-                StreamData::Kline(data) => snapshot.last_kline = Some(data),
-                StreamData::DepthOrderBook(data) => snapshot.last_order_book = Some(data),
-                StreamData::BookTicker(data) => snapshot.last_book_ticker = Some(data),
+            match &msg {
+                StreamData::AggTrade(data) => snapshot.last_agg_trade = Some(data.clone()),
+                StreamData::Kline(data) => snapshot.last_kline = Some(data.clone()),
+                StreamData::DepthOrderBook(data) => snapshot.last_order_book = Some(data.clone()),
+                StreamData::BookTicker(data) => snapshot.last_book_ticker = Some(data.clone()),
             }
         }
+
+        if let Ok(json) = serde_json::to_string(&msg) {
+            if let Ok(c_string) = CString::new(json) {
+                callback(c_string.as_ptr());
+            }
+        }
+
         run_all_strategies(Arc::clone(market_snapshot)).await;
     }
 }
@@ -499,19 +513,19 @@ fn Volume_spike (kline_data: KlineData){
              kline_data.volume, kline_data.taker_buy_base_asset_volume, kline_data.is_final_bar);
 }
 
+pub type DataCallback = extern "C" fn(*const c_char);
 
 #[no_mangle]
-pub extern "C" fn run_trading_bot(
-    coins: *const c_char,
-    stream_types: *const c_char,
+pub async  fn run_trading_bot(
+    coins: &String,
+    stream_types: &String,
     keep_running: *mut std::ffi::c_int,
-) -> bool {
-    // Безопасно преобразуем C-строки в Rust String
-    let coins_cstr = unsafe { CStr::from_ptr(coins) };
-    let stream_types_cstr = unsafe { CStr::from_ptr(stream_types) };
+    callback: DataCallback,
+) -> Result<(), String> {
 
-    let input_coin = coins_cstr.to_string_lossy().into_owned();
-    let input_stream_types = stream_types_cstr.to_string_lossy().into_owned();
+
+    let input_coin = coins.clone();
+    let input_stream_types = stream_types.clone();
 
     // Создаем runtime для tokio
     let rt = tokio::runtime::Runtime::new().unwrap();
@@ -528,8 +542,9 @@ pub extern "C" fn run_trading_bot(
         }));
 
         let snapshot_clone = Arc::clone(&snapshot);
+        let mut receiver = receiver;
         let snapshot_updater_handle = tokio::spawn(async move {
-            snapshotUpdater(&mut receiver, &snapshot_clone).await;
+            snapshotUpdater(&mut receiver, &snapshot_clone,callback).await;
         });
 
         let coins_vector_string: Vec<String> = input_coin.trim().split(",").map(|s| s.trim().to_string()).collect();
@@ -616,7 +631,7 @@ pub extern "C" fn run_trading_bot(
         let _ = tokio::join!(websocket_handle, strategy_handle, snapshot_updater_handle);
     });
 
-    true
+    Ok(())
 }
 
 
