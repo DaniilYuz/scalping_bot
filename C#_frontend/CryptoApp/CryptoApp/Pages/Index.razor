@@ -1,8 +1,11 @@
 ﻿@page "/"
-@using System.Runtime.InteropServices
-@using System.Text
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Logging
 @using CryptoApp.Interop
-@using Microsoft.AspNetCore.Components.Authorization
+@using System.Runtime.InteropServices
 @inject ILogger<Index> Logger
 @implements IDisposable
 
@@ -85,112 +88,192 @@
     private int TradesCount = 0;
     private string Uptime => (DateTime.Now - StartTime).ToString(@"hh\:mm\:ss");
     private DateTime StartTime = DateTime.Now;
-    private IntPtr botHandle = IntPtr.Zero;
     private string StatusMessage = "";
     private string ErrorMessage = "";
+    private RusterBot? rusterBot;
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr LoadLibrary(string dllToLoad);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool FreeLibrary(IntPtr hModule);
 
     protected override void OnInitialized()
     {
         Logger.LogInformation("🚀 Dashboard инициализирован в {Time}", DateTime.Now);
         StatusMessage = "Dashboard загружен успешно";
-        base.OnInitialized();
     }
 
-    private RusterBot? rusterBot;
-
-    private async Task StartBot()
+    private bool CheckDllAvailability()
     {
-        try
+        IntPtr handle = LoadLibrary("rust_binance_text.dll");
+        if (handle == IntPtr.Zero)
         {
-            isProcessing = true;
-            ErrorMessage = "";
-            StatusMessage = "Запуск бота...";
-            StateHasChanged();
+            int errorCode = Marshal.GetLastWin32Error();
+            Logger.LogError("DLL load failed: {ErrorCode}", errorCode);
+            return false;
+        }
+        FreeLibrary(handle);
+        return true;
+    }
 
-            Logger.LogInformation("🔥 StartBot triggered at {Time}", DateTime.Now);
 
-            rusterBot = new RusterBot();
-
-            rusterBot.OnDataReceived += OnBotDataReceived;
-
-            bool started = rusterBot.StartBot("BTCUSDT,ETHUSDT", "AggTrade,Kline");
-
-            if (started)
+        private async Task StartBot()
+        {
+            try
             {
-                BotConnected = true;
-                StatusMessage = "Бот успешно запущен через Rust библиотеку";
-                Logger.LogInformation("✅ Bot connected successfully");
+                isProcessing = true;
+                ErrorMessage = "";
+                StatusMessage = "Проверка библиотеки...";
+                StateHasChanged();
+
+                // Проверяем доступность DLL
+                if (!CheckDllAvailability())
+                {
+                    StatusMessage = "Ошибка: Не найдена библиотека rust_binance_text.dll";
+                    ErrorMessage = "Убедитесь, что rust_binance_text.dll находится в папке с приложением";
+                    Logger.LogError("❌ DLL not found or cannot be loaded");
+                    return;
+                }
+
+                StatusMessage = "Запуск бота...";
+                StateHasChanged();
+
+                Logger.LogInformation("🔥 StartBot triggered at {Time}", DateTime.Now);
+
+                // Очищаем предыдущий экземпляр если есть
+                if (rusterBot != null)
+                {
+                    rusterBot.OnDataReceived -= OnBotDataReceived;
+                    rusterBot.Dispose();
+                }
+
+                rusterBot = new RusterBot();
+                rusterBot.OnDataReceived += OnBotDataReceived;
+
+                // Используем правильные параметры: числовые коды вместо строк
+                // 1 = AggTrade, 2 = Kline_1m, 3 = Depth, 4 = BookTicker
+                bool started = rusterBot.StartBot("BTCUSDT,ETHUSDT", "1,2");
+
+                if (started)
+                {
+                    BotConnected = true;
+                    StartTime = DateTime.Now; // Обновляем время старта
+                    StatusMessage = "Бот успешно запущен через Rust библиотеку";
+                    Logger.LogInformation("✅ Bot connected successfully");
+                }
+                else
+                {
+                    BotConnected = false;
+                    StatusMessage = $"Не удалось запустить бот: {rusterBot.LastError}";
+                    ErrorMessage = rusterBot.LastError ?? "Неизвестная ошибка";
+                    Logger.LogWarning("⚠️ Failed to start bot: {Error}", rusterBot.LastError);
+                }
             }
-            else
+            catch (SEHException sehEx)
             {
                 BotConnected = false;
-                StatusMessage = $"Не удалось запустить бот: {rusterBot.LastError}";
-                Logger.LogWarning("⚠️ Failed to start bot: {Error}", rusterBot.LastError);
+                ErrorMessage = $"SEH Exception: {sehEx.Message} (код: 0x{sehEx.ErrorCode:X})";
+                StatusMessage = "Критическая ошибка при запуске бота";
+                Logger.LogError(sehEx, "❌ SEH Exception при запуске бота");
             }
-        }
-        catch (Exception ex)
-        {
-            BotConnected = false;
-            ErrorMessage = $"Ошибка при запуске бота: {ex.Message}";
-            Logger.LogError(ex, "❌ Ошибка при запуске бота");
-        }
-        finally
-        {
-            isProcessing = false;
-            StateHasChanged();
-        }
-    }
-
-    private void OnBotDataReceived(string jsonData)
-    {
-        // Обновляем UI или внутренние данные из коллбэка
-        // Пример:
-        LastSignal = jsonData;
-
-        // Чтобы обновить UI из не-UI потока, вызываем InvokeAsync
-        InvokeAsync(StateHasChanged);
-    }
-
-    private async Task StopBot()
-    {
-        try
-        {
-            isProcessing = true;
-            StatusMessage = "Остановка бота...";
-            StateHasChanged();
-
-            Logger.LogInformation("🛑 StopBot triggered at {Time}", DateTime.Now);
-
-            if (rusterBot != null && rusterBot.IsRunning)
+            catch (DllNotFoundException dllEx)
             {
-                rusterBot.StopBot();
-                rusterBot.OnDataReceived -= OnBotDataReceived;
-                rusterBot = null;
+                BotConnected = false;
+                ErrorMessage = $"DLL не найдена: {dllEx.Message}";
+                StatusMessage = "Библиотека не найдена";
+                Logger.LogError(dllEx, "❌ DLL не найдена");
             }
-
-            await Task.Delay(500);
-
-            BotConnected = false;
-            StatusMessage = "Бот остановлен";
-            Logger.LogInformation("✅ Bot stopped successfully");
+            catch (Exception ex)
+            {
+                BotConnected = false;
+                ErrorMessage = $"Ошибка при запуске бота: {ex.Message}";
+                StatusMessage = "Ошибка запуска";
+                Logger.LogError(ex, "❌ Общая ошибка при запуске бота");
+            }
+            finally
+            {
+                isProcessing = false;
+                StateHasChanged();
+            }
         }
-        catch (Exception ex)
+
+        private async Task StopBot()
         {
-            ErrorMessage = $"Ошибка при остановке бота: {ex.Message}";
-            Logger.LogError(ex, "❌ Ошибка при остановке бота");
+            try
+            {
+                isProcessing = true;
+                StatusMessage = "Остановка бота...";
+                StateHasChanged();
+
+                Logger.LogInformation("🛑 StopBot triggered at {Time}", DateTime.Now);
+
+                if (rusterBot != null && rusterBot.IsRunning)
+                {
+                    rusterBot.StopBot();
+
+                    // Ждем корректной остановки
+                    await Task.Delay(1000);
+
+                    rusterBot.OnDataReceived -= OnBotDataReceived;
+                    rusterBot.Dispose();
+                    rusterBot = null;
+                }
+
+                BotConnected = false;
+                StatusMessage = "Бот остановлен";
+                ErrorMessage = "";
+                Logger.LogInformation("✅ Bot stopped successfully");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Ошибка при остановке бота: {ex.Message}";
+                StatusMessage = "Ошибка остановки";
+                Logger.LogError(ex, "❌ Ошибка при остановке бота");
+            }
+            finally
+            {
+                isProcessing = false;
+                StateHasChanged();
+            }
         }
-        finally
+
+        private void OnBotDataReceived(string jsonData)
         {
-            isProcessing = false;
-            StateHasChanged();
+            try
+            {
+                // Обновляем данные из callback
+                LastSignal = jsonData;
+
+                // Простая логика для демонстрации - можете расширить
+                if (jsonData.Contains("BTCUSDT") || jsonData.Contains("ETHUSDT"))
+                {
+                    TradesCount++;
+                    // Здесь можете добавить парсинг JSON и расчет PnL
+                }
+
+                // Обновляем UI из не-UI потока
+                InvokeAsync(StateHasChanged);
+
+                Logger.LogDebug("📊 Received data: {Data}", jsonData.Length > 100 ?
+                    jsonData.Substring(0, 100) + "..." : jsonData);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "❌ Ошибка при обработке данных от Rust");
+            }
         }
-    }
 
-
-    private string GetStatusClass() => BotConnected ? "text-success" : "text-danger";
+        private string GetStatusClass() => BotConnected ? "text-success" : "text-danger";
 
     public void Dispose()
     {
+        if (rusterBot != null)
+        {
+            rusterBot.OnDataReceived -= OnBotDataReceived;
+            rusterBot.Dispose();
+            rusterBot = null;
+        }
         Logger.LogInformation("🧹 Dashboard disposed");
     }
 }
