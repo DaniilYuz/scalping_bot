@@ -18,6 +18,10 @@ namespace CryptoApp.Interop
         [DllImport("rust_binance_text", CallingConvention = CallingConvention.Cdecl)]
         private static extern void free_string(IntPtr s);
 
+        [DllImport("rust_binance_text", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)] 
+        public static extern bool is_runtime_initialized();
+
         private DataCallback? _callbackDelegate;
         private int _keepRunning;
         private GCHandle _callbackHandle;

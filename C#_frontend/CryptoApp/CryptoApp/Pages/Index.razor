@@ -141,6 +141,15 @@
 
                 Logger.LogInformation("🔥 StartBot triggered at {Time}", DateTime.Now);
 
+
+            // Проверка runtime перед запуском
+            bool runtimeAlreadyExists = RusterBot.is_runtime_initialized();
+            Logger.LogInformation("🧠 Tokio runtime already initialized? {Exists}", runtimeAlreadyExists);
+            if (runtimeAlreadyExists)
+            {
+                StatusMessage = "⚠️ Внимание: Runtime уже инициализирован. Возможно, прошлый запуск не завершился.";
+            }
+
                 // Очищаем предыдущий экземпляр если есть
                 if (rusterBot != null)
                 {

@@ -1032,6 +1032,7 @@ dependencies = [
  "crossbeam-channel",
  "futures-util",
  "libc",
+ "once_cell",
  "serde",
  "serde_json",
  "tokio",

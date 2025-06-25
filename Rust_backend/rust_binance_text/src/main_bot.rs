@@ -529,110 +529,110 @@ pub async  fn run_trading_bot(
     let input_stream_types = stream_types.clone();
 
     // Создаем runtime для tokio
-    let rt = tokio::runtime::Runtime::new().unwrap();
+    //let rt = tokio::runtime::Runtime::new().unwrap();
 
     // Запускаем асинхронный код
-    rt.block_on(async {
-        let (sender, mut receiver) = mpsc::channel(5000);
+    //rt.block_on(async {});
 
-        let snapshot = Arc::new(RwLock::new(MarketSnapshot {
-            last_agg_trade: None,
-            last_kline: None,
-            last_order_book: None,
-            last_book_ticker: None,
-        }));
+    let (sender, mut receiver) = mpsc::channel(5000);
 
-        let snapshot_clone = Arc::clone(&snapshot);
-        let mut receiver = receiver;
-        let snapshot_updater_handle = tokio::spawn(async move {
-            snapshotUpdater(&mut receiver, &snapshot_clone,callback).await;
+    let snapshot = Arc::new(RwLock::new(MarketSnapshot {
+        last_agg_trade: None,
+        last_kline: None,
+        last_order_book: None,
+        last_book_ticker: None,
+    }));
+
+    let snapshot_clone = Arc::clone(&snapshot);
+    let mut receiver = receiver;
+    let snapshot_updater_handle = tokio::spawn(async move {
+        snapshotUpdater(&mut receiver, &snapshot_clone,callback).await;
+    });
+
+    let coins_vector_string: Vec<String> = input_coin.trim().split(",").map(|s| s.trim().to_string()).collect();
+
+    let stream_types_string: Vec<String> = input_stream_types
+        .trim()
+        .split(',')
+        .map(|s| match s.trim().parse::<i32>() {
+            Ok(1) => "arr".to_string(),
+            Ok(2) => "kline_1m".to_string(),
+            Ok(3) => "depth".to_string(),
+            Ok(4) => "bookTicker".to_string(),
+            _ => "Unknown stream type".to_string(),
+        })
+        .collect();
+
+    let coins_vector: Vec<&str> = input_coin.trim().split(",").map(|s| s.trim()).collect();
+
+    let endpoints: Vec<String> = coins_vector.iter().flat_map(|coin| {
+        stream_types_string.iter().map(move |stream| {
+            let formatted_stream = format!("{}@{}", coin.to_lowercase(), stream);
+            if formatted_stream.contains(&"@arr") {
+                "!ticker@arr".to_string()
+            } else {
+                formatted_stream
+            }
+        })
+    }).collect();
+
+    let keep_running_flag = Arc::new(AtomicBool::new(true));
+    let keep_running_ws = keep_running_flag.clone();
+    let keep_running_strategy = keep_running_flag.clone();
+
+    let websocket_handle = tokio::spawn(async move {
+        let mut web_socket = WebSockets::new(move |event: WebsocketEvent| {
+            let stream_types_vector: Vec<i32> = input_stream_types
+                .trim()
+                .split(',')
+                .filter_map(|s| s.trim().parse::<i32>().ok())
+                .collect();
+
+            for stream_type in &stream_types_vector {
+                match stream_type {
+                    1 => handle_event_AggTrade(&event, &sender, &coins_vector_string).unwrap_or_else(|_| ()),
+                    2 => handle_event_Kline(&event, &sender).unwrap_or_else(|_| ()),
+                    3 => handle_event_DepthOrderBook(&event, &sender).unwrap_or_else(|_| ()),
+                    4 => handle_event_BookTicker(&event, &sender).unwrap_or_else(|_| ()),
+                    _ => println!("Unknown stream type: {}", stream_type),
+                }
+            }
+            Ok(())
         });
 
-        let coins_vector_string: Vec<String> = input_coin.trim().split(",").map(|s| s.trim().to_string()).collect();
-
-        let stream_types_string: Vec<String> = input_stream_types
-            .trim()
-            .split(',')
-            .map(|s| match s.trim().parse::<i32>() {
-                Ok(1) => "arr".to_string(),
-                Ok(2) => "kline_1m".to_string(),
-                Ok(3) => "depth".to_string(),
-                Ok(4) => "bookTicker".to_string(),
-                _ => "Unknown stream type".to_string(),
-            })
-            .collect();
-
-        let coins_vector: Vec<&str> = input_coin.trim().split(",").map(|s| s.trim()).collect();
-
-        let endpoints: Vec<String> = coins_vector.iter().flat_map(|coin| {
-            stream_types_string.iter().map(move |stream| {
-                let formatted_stream = format!("{}@{}", coin.to_lowercase(), stream);
-                if formatted_stream.contains(&"@arr") {
-                    "!ticker@arr".to_string()
-                } else {
-                    formatted_stream
-                }
-            })
-        }).collect();
-
-        let keep_running_flag = Arc::new(AtomicBool::new(true));
-        let keep_running_ws = keep_running_flag.clone();
-        let keep_running_strategy = keep_running_flag.clone();
-
-        let websocket_handle = tokio::spawn(async move {
-            let mut web_socket = WebSockets::new(move |event: WebsocketEvent| {
-                let stream_types_vector: Vec<i32> = input_stream_types
-                    .trim()
-                    .split(',')
-                    .filter_map(|s| s.trim().parse::<i32>().ok())
-                    .collect();
-
-                for stream_type in &stream_types_vector {
-                    match stream_type {
-                        1 => handle_event_AggTrade(&event, &sender, &coins_vector_string).unwrap_or_else(|_| ()),
-                        2 => handle_event_Kline(&event, &sender).unwrap_or_else(|_| ()),
-                        3 => handle_event_DepthOrderBook(&event, &sender).unwrap_or_else(|_| ()),
-                        4 => handle_event_BookTicker(&event, &sender).unwrap_or_else(|_| ()),
-                        _ => println!("Unknown stream type: {}", stream_type),
-                    }
-                }
-                Ok(())
-            });
-
-            if let Err(e) = web_socket.connect_multiple_streams(&endpoints) {
-                println!("Websocket connection error: {:?}", e);
-                return;
-            }
-
-            if let Err(e) = web_socket.event_loop(&keep_running_ws) {
-                println!("Error in event_loop: {:?}", e);
-            }
-
-            web_socket.disconnect().unwrap();
-        });
-
-        let strategy_handle = {
-            let snapshot = Arc::clone(&snapshot);
-            tokio::spawn(async move {
-                while keep_running_strategy.load(Ordering::Relaxed) {
-                    run_all_strategies(snapshot.clone()).await;
-                    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
-                }
-            })
-        };
-
-        // Ожидаем сигнала остановки через переданный указатель
-        /*unsafe {
-            while *keep_running != 0 {
-                std::thread::sleep(std::time::Duration::from_millis(100));
-            }
-            keep_running_flag.store(false, Ordering::Relaxed);
+        if let Err(e) = web_socket.connect_multiple_streams(&endpoints) {
+            println!("Websocket connection error: {:?}", e);
+            return;
         }
 
-         */
+        if let Err(e) = web_socket.event_loop(&keep_running_ws) {
+            println!("Error in event_loop: {:?}", e);
+        }
 
-        let _ = tokio::join!(websocket_handle, strategy_handle, snapshot_updater_handle);
+        web_socket.disconnect().unwrap();
     });
+
+    let strategy_handle = {
+        let snapshot = Arc::clone(&snapshot);
+        tokio::spawn(async move {
+            while keep_running_strategy.load(Ordering::Relaxed) {
+                run_all_strategies(snapshot.clone()).await;
+                tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+            }
+        })
+    };
+
+    // Ожидаем сигнала остановки через переданный указатель
+    /*unsafe {
+        while *keep_running != 0 {
+            std::thread::sleep(std::time::Duration::from_millis(100));
+        }
+        keep_running_flag.store(false, Ordering::Relaxed);
+    }
+
+     */
+
+    let _ = tokio::join!(websocket_handle, strategy_handle, snapshot_updater_handle);
 
     Ok(())
 }
