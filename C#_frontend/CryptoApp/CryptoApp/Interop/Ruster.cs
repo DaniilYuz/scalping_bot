@@ -3,13 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace CryptoApp.Interop
 {
-    public class RusterBot
+    public class RusterBot : IDisposable
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void DataCallback(IntPtr jsonPtr);
 
         [DllImport("rust_binance_text", CallingConvention = CallingConvention.Cdecl)]
-            private static extern IntPtr start_bot(
+        private static extern IntPtr start_bot(
             [MarshalAs(UnmanagedType.LPStr)] string coins,
             [MarshalAs(UnmanagedType.LPStr)] string streamTypes,
             ref int keepRunning,
@@ -22,6 +22,7 @@ namespace CryptoApp.Interop
         private int _keepRunning;
         private GCHandle _callbackHandle;
         private bool _disposed = false;
+        private readonly object _lock = new object();
 
         public bool IsRunning => _keepRunning != 0;
         public event Action<string>? OnDataReceived;
@@ -29,22 +30,39 @@ namespace CryptoApp.Interop
 
         public bool StartBot(string coins, string streamTypes)
         {
-            if (IsRunning || _disposed)
-                return false;
-
-            try
+            lock (_lock)
             {
-                _keepRunning = 1;
-                _callbackDelegate = new DataCallback(OnDataReceivedFromRust);
+                if (IsRunning || _disposed)
+                    return false;
 
-                _callbackHandle = GCHandle.Alloc(_callbackDelegate);
-
-                IntPtr errPtr = start_bot(coins, streamTypes, ref _keepRunning, _callbackDelegate);
-
-                if (errPtr != IntPtr.Zero)
+                try
                 {
-                    LastError = Marshal.PtrToStringAnsi(errPtr);
-                    free_string(errPtr);
+                    _keepRunning = 1;
+                    _callbackDelegate = new DataCallback(OnDataReceivedFromRust);
+
+                    _callbackHandle = GCHandle.Alloc(_callbackDelegate);
+
+                    IntPtr errPtr = start_bot(coins, streamTypes, ref _keepRunning, _callbackDelegate);
+
+                    if (errPtr != IntPtr.Zero)
+                    {
+                        LastError = Marshal.PtrToStringAnsi(errPtr);
+                        free_string(errPtr);
+
+                        // Освобождаем handle только при ошибке
+                        if (_callbackHandle.IsAllocated)
+                            _callbackHandle.Free();
+
+                        _keepRunning = 0;
+                        return false;
+                    }
+
+                    LastError = null;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    LastError = $"C# Exception: {ex.Message}";
 
                     if (_callbackHandle.IsAllocated)
                         _callbackHandle.Free();
@@ -52,41 +70,32 @@ namespace CryptoApp.Interop
                     _keepRunning = 0;
                     return false;
                 }
-
-                LastError = null;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                LastError = $"C# Exception: {ex.Message}";
-
-                if (_callbackHandle.IsAllocated)
-                    _callbackHandle.Free();
-
-                _keepRunning = 0;
-                return false;
             }
         }
 
         public void StopBot()
         {
-            if (!IsRunning)
-                return;
-
-            try
+            lock (_lock)
             {
-                _keepRunning = 0;
+                if (!IsRunning)
+                    return;
 
-                System.Threading.Thread.Sleep(500);
-
-                if (_callbackHandle.IsAllocated)
+                try
                 {
-                    _callbackHandle.Free();
+                    _keepRunning = 0;
+
+                    // Даем время Rust коду завершиться
+                    System.Threading.Thread.Sleep(1000);
+
+                    if (_callbackHandle.IsAllocated)
+                    {
+                        _callbackHandle.Free();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                LastError = $"Stop error: {ex.Message}";
+                catch (Exception ex)
+                {
+                    LastError = $"Stop error: {ex.Message}";
+                }
             }
         }
 
@@ -100,6 +109,7 @@ namespace CryptoApp.Interop
                 string? json = Marshal.PtrToStringAnsi(jsonPtr);
                 if (!string.IsNullOrEmpty(json))
                 {
+                    // Вызываем событие в UI потоке если нужно
                     OnDataReceived?.Invoke(json);
                 }
             }
@@ -123,7 +133,6 @@ namespace CryptoApp.Interop
                 {
                     StopBot();
                 }
-
                 _disposed = true;
             }
         }

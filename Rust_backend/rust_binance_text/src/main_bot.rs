@@ -519,7 +519,8 @@ pub type DataCallback = extern "C" fn(*const c_char);
 pub async  fn run_trading_bot(
     coins: &String,
     stream_types: &String,
-    keep_running: *mut std::ffi::c_int,
+    //keep_running: *mut std::ffi::c_int,
+    keep_running: Arc<AtomicBool>, // заменил *mut c_int
     callback: DataCallback,
 ) -> Result<(), String> {
 
@@ -621,12 +622,14 @@ pub async  fn run_trading_bot(
         };
 
         // Ожидаем сигнала остановки через переданный указатель
-        unsafe {
+        /*unsafe {
             while *keep_running != 0 {
                 std::thread::sleep(std::time::Duration::from_millis(100));
             }
             keep_running_flag.store(false, Ordering::Relaxed);
         }
+
+         */
 
         let _ = tokio::join!(websocket_handle, strategy_handle, snapshot_updater_handle);
     });
