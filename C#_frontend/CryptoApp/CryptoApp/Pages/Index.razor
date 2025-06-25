@@ -256,7 +256,7 @@
                 InvokeAsync(StateHasChanged);
 
                 Logger.LogDebug("📊 Received data: {Data}", jsonData.Length > 100 ?
-                    jsonData.Substring(0, 100) + "..." : jsonData);
+                    jsonData.Substring(0, 100)  + "..." : jsonData);
             }
             catch (Exception ex)
             {
