@@ -14,7 +14,7 @@ use binance::websockets::{WebSockets, WebsocketEvent};
 use std::sync::atomic::Ordering;
 use binance::model::{AggTrade, DayTickerEvent};
 use tokio::sync::mpsc;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{Sender, Receiver};
 use tokio::time::{Instant, Sleep};
 use tokio_tungstenite::tungstenite::Message;
@@ -177,17 +177,17 @@ pub struct AggTradeData {
 }
 
 #[derive(Serialize, Clone)]
-pub struct KlineData {
-    pub symbol: String,
-    pub open: f64,
-    pub close: f64,
-    pub high: f64,
-    pub low: f64,
-    pub volume: f64,
-    pub taker_buy_base_asset_volume: f64,
-    pub taker_buy_quote_asset_volume: f64,
-    pub is_final_bar: bool,
-}
+    pub struct KlineData {
+        pub symbol: String,
+        pub open: f64,
+        pub close: f64,
+        pub high: f64,
+        pub low: f64,
+        pub volume: f64,
+        pub taker_buy_base_asset_volume: f64,
+        pub taker_buy_quote_asset_volume: f64,
+        pub is_final_bar: bool,
+    }
 
 #[derive(Serialize, Clone, Debug)]
 pub struct OrderBookEntry {
@@ -219,6 +219,48 @@ pub struct MarketSnapshot {
     pub last_kline: Option<KlineData>,
     pub last_order_book: Option<OrderBookData>,
     pub last_book_ticker: Option<BookTickerData>,
+    #[serde(skip_serializing)]
+    pub volume_history: VolumeHistory,
+}
+
+#[derive(Clone)]
+struct VolumeHistory {
+    volumes: Vec<f64>,
+    max_len: usize,
+}
+
+impl VolumeHistory {
+    fn new (max_len: usize) -> Self {
+        Self {
+            volumes:Vec::new(),
+            max_len,
+        }
+    }
+
+    fn add (&mut self, volumes: f64) {
+        self.volumes.push(volumes);
+        if self.volumes.len() > self.max_len {
+            self.volumes.remove(0);
+        }
+    }
+
+    fn avarage (&self) -> Option<f64> {
+        if self.volumes.is_empty() {
+            None
+        }else {
+            Some(self.volumes.iter().sum::<f64>() / self.volumes.len() as f64)
+        }
+    }
+}
+
+pub struct StrategyState {
+    pub volume_history: VolumeHistory,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct StrategySignal {
+    pub tactic_name: String,
+    pub tactic_signal: String,
 }
 
 fn handle_event_AggTrade(event: &WebsocketEvent, sender: &mpsc::Sender<StreamData>, coinName: &Vec<String>) -> Result<(), ()> {
@@ -461,6 +503,10 @@ async fn run_all_strategies (snapshot: Arc<RwLock<MarketSnapshot>>) {
     println!("[DEBUG] Running strategies");
     let snap = snapshot.read().unwrap();
 
+    //let kline_data = snap.last_kline.clone();
+
+    let mut signals = Vec::new();
+
     println!("AggTrade data present: {}", snap.last_agg_trade.is_some());
     println!("Kline data present: {}", snap.last_kline.is_some());
     println!("OrderBook data present: {}", snap.last_order_book.is_some());
@@ -474,13 +520,14 @@ async fn run_all_strategies (snapshot: Arc<RwLock<MarketSnapshot>>) {
     if let (Some(agg), Some(kline), Some(book)) = (agg_data.clone(), kline_data.clone(), book_ticker_data.clone()) {
         Momentum_strategy(agg, kline, book);
     }
-
     if let (Some(agg), Some(kline)) = (agg_data.clone(), kline_data.clone()) {
         Mean_Reversion(agg, kline);
     }
-
     if let (Some(depth), Some(book)) = (depth_data, book_ticker_data) {
         Order_Book_Pressure(depth, book);
+    }
+    if let (Some(kline)) = (kline_data.clone()) {
+        Volume_spike(kline, &mut snap.volume_history);
     }
 
     drop(snap);
@@ -489,28 +536,130 @@ async fn run_all_strategies (snapshot: Arc<RwLock<MarketSnapshot>>) {
 fn Momentum_strategy (aggTrade: AggTradeData, kline: KlineData, bookTicker: BookTickerData) {
     //if let (Some(agg), Some(kl), Some(ticker)) = (&aggTrade, &kline, &bookTicker) {}
 
-    println!("AggTrade: average_price: {}, current_close: {}, Kline: open {}, close: {}, is_final_bar: {}, BookTicker: best_bid: {}, best_ask: {}",
-             aggTrade.average_price, aggTrade.current_close, kline.open, kline.close, kline.is_final_bar, bookTicker.best_bid, bookTicker.best_ask);
+    //println!("AggTrade: average_price: {}, current_close: {}, Kline: open {}, close: {}, is_final_bar: {}, BookTicker: best_bid: {}, best_ask: {}",
+             //aggTrade.average_price, aggTrade.current_close, kline.open, kline.close, kline.is_final_bar, bookTicker.best_bid, bookTicker.best_ask);
+
+    if (
+        kline.is_final_bar
+            && aggTrade.current_close > aggTrade.average_price
+            && aggTrade.current_close > bookTicker.best_bid
+            && aggTrade.current_close > bookTicker.best_ask
+            && kline.close > kline.open
+    ) {
+       Some(StrategySignal {
+           tactic_name: "Momentum".to_string(),
+           tactic_signal: "Buy".to_string(),
+       });
+    } else if (
+        kline.is_final_bar
+            && aggTrade.current_close < aggTrade.average_price
+            && aggTrade.current_close < bookTicker.best_bid
+            && aggTrade.current_close < bookTicker.best_ask
+            && kline.close < kline.open
+    ) {
+        Some(StrategySignal {
+            tactic_name: "Momentum".to_string(),
+            tactic_signal: "Sell".to_string(),
+        });
+    }else if ( (
+        kline.is_final_bar
+            && aggTrade.current_close > aggTrade.average_price
+            && aggTrade.current_close > bookTicker.best_bid
+            && aggTrade.current_close > bookTicker.best_ask
+            && kline.close > kline.open
+        ) || (
+        kline.is_final_bar
+            && aggTrade.current_close < aggTrade.average_price
+            && aggTrade.current_close < bookTicker.best_bid
+            && aggTrade.current_close < bookTicker.best_ask
+            && kline.close < kline.open
+        )
+        ){
+        Some(StrategySignal {
+            tactic_name: "Momentum".to_string(),
+            tactic_signal: "No move".to_string(),
+        });
+    }
 }
 
 fn Mean_Reversion(aggTrade: AggTradeData, kline: KlineData) {
     //if let (Some(agg), Some(kl)) = (&aggTrade, &kline) {}
 
-    println!("AggTraade: average_price: {}, Kline: open {}, close {}, hight: {}, low: {}",
-             aggTrade.average_price, kline.open, kline.close, kline.high, kline.low);
+    //println!("AggTraade: average_price: {}, Kline: open {}, close {}, hight: {}, low: {}",
+             //aggTrade.average_price, kline.open, kline.close, kline.high, kline.low);
+    //print!("Mean_Reversion");
+
+    let currentPrice = kline.close;
+    let devitation = currentPrice - aggTrade.average_price;
+    let devitation_percent = devitation / aggTrade.average_price;
+    let min_deviation_threshold = 0.002;
+
+    if(devitation_percent <= min_deviation_threshold) {
+        Some(StrategySignal {
+            tactic_name: "Mean_Reversion".to_string(),
+            tactic_signal: "Buy".to_string(),
+        });
+    }
+    if(devitation_percent >= min_deviation_threshold) {
+        Some(StrategySignal {
+            tactic_name: "Mean_Reversion".to_string(),
+            tactic_signal: "Sell".to_string(),
+        });
+    }
 }
 
 fn Order_Book_Pressure (depth: OrderBookData, book: BookTickerData) {
     //if let (Some(dep), Some(book)) = (&depth, &book) {}
 
-    println!("DepthOrderBook: bid.price:{:?}, bid.qty:{:?}, ask.price:{:?}, ask.qty:{:?}, BookTicker: best_bid_qty: {}, best_ask_qty: {}",
-             depth.bids.get(0), depth.bids.get(1), depth.asks.get(0), depth.asks.get(1), book.best_bid_qty, book.best_ask_qty);
+    //println!("DepthOrderBook: bid.price:{:?}, bid.qty:{:?}, ask.price:{:?}, ask.qty:{:?}, BookTicker: best_bid_qty: {}, best_ask_qty: {}",
+             //depth.bids.get(0), depth.bids.get(1), depth.asks.get(0), depth.asks.get(1), book.best_bid_qty, book.best_ask_qty);
+    //print!("Order_Book_Pressure");
+
+
+    let bit_pressure = book.best_bid_qty / (book.best_bid_qty + 0.0000001);
+
+    if (bit_pressure > 2.0) {
+        Some(StrategySignal {
+            tactic_name: "Order_Book_Pressure".to_string(),
+            tactic_signal: "Buy".to_string(),
+        });
+    }else if (bit_pressure < 0.5) {
+        Some(StrategySignal {
+            tactic_name: "Order_Book_Pressure".to_string(),
+            tactic_signal: "Sell".to_string(),
+        });
+    }
+
 }
-fn Volume_spike (kline_data: KlineData){
+fn Volume_spike (kline_data: KlineData, volume_history: &mut VolumeHistory){
     //if let (Some(kl)) = &kline_data {}
 
-    println!("Kline: volume: {}, taker_buy_base_asset_volume: {}, is_final_bar:{} ",
-             kline_data.volume, kline_data.taker_buy_base_asset_volume, kline_data.is_final_bar);
+   //println!("Kline: volume: {}, taker_buy_base_asset_volume: {}, is_final_bar:{} ",
+             //kline_data.volume, kline_data.taker_buy_base_asset_volume, kline_data.is_final_bar);
+
+    //print!("Volume_spike");
+
+    if !kline_data.is_final_bar {
+        return;
+    }
+    volume_history.add(kline_data.volume);
+
+    if let Some(avg_volume) = volume_history.avarage(){
+        if kline_data.volume > avg_volume * 1.5 {
+            if kline_data.close > kline_data.open {
+                Some(StrategySignal {
+                    tactic_name: "Volume_spike".to_string(),
+                    tactic_signal: "Buy".to_string(),
+                });
+            } else {
+                Some(StrategySignal {
+                    tactic_name: "Volume_spike".to_string(),
+                    tactic_signal: "Sell".to_string(),
+                });
+            }
+        }
+    }
+    // let volume_ratio = kline_data.volume / kline_data.;
 }
 
 pub type DataCallback = extern "C" fn(*const c_char);
@@ -541,6 +690,7 @@ pub async  fn run_trading_bot(
         last_kline: None,
         last_order_book: None,
         last_book_ticker: None,
+        volume_history: VolumeHistory::new(50),
     }));
 
     let snapshot_clone = Arc::clone(&snapshot);
