@@ -9,6 +9,7 @@
 @inject ILogger<Index> Logger
 @implements IDisposable
 
+
 <PageTitle>Dashboard</PageTitle>
 
 <h2>📊 Dashboard</h2>
@@ -80,6 +81,8 @@
 </div>
 
 @code {
+    private System.IO.StreamWriter? logWriter;
+    private readonly string logFilePath = "bot_data_log.txt";
     private bool BotConnected = false;
     private bool isProcessing = false;
     private List<string> ActiveCoins = new() { "BTCUSDT", "ETHUSDT" };
@@ -97,6 +100,12 @@
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool FreeLibrary(IntPtr hModule);
+
+    private string GetLogFilePath()
+    {
+        return $"bot_data_log_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+    }
+    
 
     protected override void OnInitialized()
     {
@@ -118,10 +127,15 @@
     }
 
 
+
+
         private async Task StartBot()
         {
             try
             {
+                logWriter = new StreamWriter(GetLogFilePath(), append: true);
+                logWriter.AutoFlush = true;
+
                 isProcessing = true;
                 ErrorMessage = "";
                 StatusMessage = "Проверка библиотеки...";
@@ -233,6 +247,9 @@
                 StatusMessage = "Бот остановлен";
                 ErrorMessage = "";
                 Logger.LogInformation("✅ Bot stopped successfully");
+
+                logWriter?.Dispose();
+                logWriter = null;
             }
             catch (Exception ex)
             {
@@ -247,31 +264,29 @@
             }
         }
 
-        private void OnBotDataReceived(string jsonData)
+    private void OnBotDataReceived(string jsonData)
+    {
+        try
         {
-            try
+            LastSignal = jsonData;
+            TradesCount++;
+
+            // Запись в лог
+            if (logWriter != null)
             {
-                // Обновляем данные из callback
-                LastSignal = jsonData;
-
-                // Простая логика для демонстрации - можете расширить
-                if (jsonData.Contains("BTCUSDT") || jsonData.Contains("ETHUSDT"))
-                {
-                    TradesCount++;
-                    // Здесь можете добавить парсинг JSON и расчет PnL
-                }
-
-                // Обновляем UI из не-UI потока
-                InvokeAsync(StateHasChanged);
-
-                Logger.LogDebug("📊 Received data: {Data}", jsonData.Length > 100 ?
-                    jsonData.Substring(0, 100)  + "..." : jsonData);
+                // Добавляем метку времени, чтобы было понятно когда пришли данные
+                logWriter.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {jsonData}");
             }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, "❌ Ошибка при обработке данных от Rust");
-            }
+
+            InvokeAsync(StateHasChanged);
+            Logger.LogDebug("📊 Received data: {Data}", jsonData.Length > 100 ?
+                jsonData.Substring(0, 100) + "..." : jsonData);
         }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "❌ Ошибка при обработке данных от Rust");
+        }
+    }
 
         private string GetStatusClass() => BotConnected ? "text-success" : "text-danger";
 
@@ -283,6 +298,10 @@
             rusterBot.Dispose();
             rusterBot = null;
         }
+        logWriter?.Dispose();
+        logWriter = null;
+
+
         Logger.LogInformation("🧹 Dashboard disposed");
     }
 }
