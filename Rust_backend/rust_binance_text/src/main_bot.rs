@@ -474,8 +474,13 @@ fn handle_event_BookTicker(event: &WebsocketEvent, sender: &mpsc::Sender<StreamD
         _=> Ok(())
     }
 }
-async fn snapshotUpdater (receiver: &mut mpsc::Receiver<StreamData>, market_snapshot: &Arc<RwLock<MarketSnapshot>>, callback: DataCallback) {
-    print!("[TEST] snapshotUpdater start");
+async fn snapshotUpdater(
+    receiver: &mut mpsc::Receiver<StreamData>,
+    market_snapshot: &Arc<RwLock<MarketSnapshot>>,
+    callback: DataCallback
+)  {
+    println!("[TEST] snapshotUpdater start");
+
     while let Some(msg) = receiver.recv().await {
         {
             println!("[TEST] snapshotUpdater update");
@@ -490,22 +495,33 @@ async fn snapshotUpdater (receiver: &mut mpsc::Receiver<StreamData>, market_snap
             }
         }
 
-        if let Ok(json) = serde_json::to_string(&msg) {
+        let signals = run_all_strategies(Arc::clone(market_snapshot)).await;
+
+        #[derive(Serialize)]
+        struct MsgWithSignals<'a> {
+            msg: &'a StreamData,
+            signals: &'a [StrategySignal],
+        }
+
+        let wrapper = MsgWithSignals {
+            msg: &msg,
+            signals: &signals,
+        };
+
+        if let Ok(json) = serde_json::to_string(&wrapper) {
             if let Ok(c_string) = CString::new(json) {
                 callback(c_string.as_ptr());
             }
         }
-
-        run_all_strategies(Arc::clone(market_snapshot)).await;
     }
+
+
 }
-async fn run_all_strategies (snapshot: Arc<RwLock<MarketSnapshot>>) {
+async fn run_all_strategies (snapshot: Arc<RwLock<MarketSnapshot>>) -> Vec<StrategySignal> {
     println!("[DEBUG] Running strategies");
     let snap = snapshot.read().unwrap();
 
     //let kline_data = snap.last_kline.clone();
-
-    let mut signals = Vec::new();
 
     println!("AggTrade data present: {}", snap.last_agg_trade.is_some());
     println!("Kline data present: {}", snap.last_kline.is_some());
@@ -517,23 +533,38 @@ async fn run_all_strategies (snapshot: Arc<RwLock<MarketSnapshot>>) {
     let depth_data = snap.last_order_book.clone();
     let book_ticker_data = snap.last_book_ticker.clone();
 
+    let mut signals: Vec<StrategySignal> = Vec::new();
+
     if let (Some(agg), Some(kline), Some(book)) = (agg_data.clone(), kline_data.clone(), book_ticker_data.clone()) {
-        Momentum_strategy(agg, kline, book);
-    }
-    if let (Some(agg), Some(kline)) = (agg_data.clone(), kline_data.clone()) {
-        Mean_Reversion(agg, kline);
-    }
-    if let (Some(depth), Some(book)) = (depth_data, book_ticker_data) {
-        Order_Book_Pressure(depth, book);
-    }
-    if let (Some(kline)) = (kline_data.clone()) {
-        Volume_spike(kline, &mut snap.volume_history);
+        if let Some(signal) = Momentum_strategy(agg, kline, book) {
+            signals.push(signal);
+        }
     }
 
-    drop(snap);
+    if let (Some(agg), Some(kline)) = (agg_data.clone(), kline_data.clone()) {
+        if let Some(signal) = Mean_Reversion(agg, kline) {
+            signals.push(signal);
+        }
+    }
+
+    if let (Some(depth), Some(book)) = (depth_data.clone(), book_ticker_data.clone()) {
+        if let Some(signal) = Order_Book_Pressure(depth, book) {
+            signals.push(signal);
+        }
+    }
+
+    if let Some(kline) = kline_data.clone() {
+        if let Some(signal) = Volume_spike(kline, &mut snap.volume_history.clone()) {
+            signals.push(signal);
+        }
+    }
+
+    return signals;
+
+    //drop(snap);
 }
 
-fn Momentum_strategy (aggTrade: AggTradeData, kline: KlineData, bookTicker: BookTickerData) {
+fn Momentum_strategy (aggTrade: AggTradeData, kline: KlineData, bookTicker: BookTickerData) -> Option<StrategySignal>{
     //if let (Some(agg), Some(kl), Some(ticker)) = (&aggTrade, &kline, &bookTicker) {}
 
     //println!("AggTrade: average_price: {}, current_close: {}, Kline: open {}, close: {}, is_final_bar: {}, BookTicker: best_bid: {}, best_ask: {}",
@@ -546,7 +577,7 @@ fn Momentum_strategy (aggTrade: AggTradeData, kline: KlineData, bookTicker: Book
             && aggTrade.current_close > bookTicker.best_ask
             && kline.close > kline.open
     ) {
-       Some(StrategySignal {
+        return Some(StrategySignal {
            tactic_name: "Momentum".to_string(),
            tactic_signal: "Buy".to_string(),
        });
@@ -557,7 +588,7 @@ fn Momentum_strategy (aggTrade: AggTradeData, kline: KlineData, bookTicker: Book
             && aggTrade.current_close < bookTicker.best_ask
             && kline.close < kline.open
     ) {
-        Some(StrategySignal {
+        return Some(StrategySignal {
             tactic_name: "Momentum".to_string(),
             tactic_signal: "Sell".to_string(),
         });
@@ -575,14 +606,16 @@ fn Momentum_strategy (aggTrade: AggTradeData, kline: KlineData, bookTicker: Book
             && kline.close < kline.open
         )
         ){
-        Some(StrategySignal {
+        return Some(StrategySignal {
             tactic_name: "Momentum".to_string(),
             tactic_signal: "No move".to_string(),
         });
+    }else {
+        return None;
     }
 }
 
-fn Mean_Reversion(aggTrade: AggTradeData, kline: KlineData) {
+fn Mean_Reversion(aggTrade: AggTradeData, kline: KlineData) -> Option<StrategySignal> {
     //if let (Some(agg), Some(kl)) = (&aggTrade, &kline) {}
 
     //println!("AggTraade: average_price: {}, Kline: open {}, close {}, hight: {}, low: {}",
@@ -595,20 +628,22 @@ fn Mean_Reversion(aggTrade: AggTradeData, kline: KlineData) {
     let min_deviation_threshold = 0.002;
 
     if(devitation_percent <= min_deviation_threshold) {
-        Some(StrategySignal {
+        return Some(StrategySignal {
             tactic_name: "Mean_Reversion".to_string(),
             tactic_signal: "Buy".to_string(),
         });
     }
-    if(devitation_percent >= min_deviation_threshold) {
-        Some(StrategySignal {
+    else if(devitation_percent > min_deviation_threshold) {
+        return Some(StrategySignal {
             tactic_name: "Mean_Reversion".to_string(),
             tactic_signal: "Sell".to_string(),
         });
+    }else {
+        return None;
     }
 }
 
-fn Order_Book_Pressure (depth: OrderBookData, book: BookTickerData) {
+fn Order_Book_Pressure (depth: OrderBookData, book: BookTickerData) -> Option<StrategySignal> {
     //if let (Some(dep), Some(book)) = (&depth, &book) {}
 
     //println!("DepthOrderBook: bid.price:{:?}, bid.qty:{:?}, ask.price:{:?}, ask.qty:{:?}, BookTicker: best_bid_qty: {}, best_ask_qty: {}",
@@ -619,19 +654,20 @@ fn Order_Book_Pressure (depth: OrderBookData, book: BookTickerData) {
     let bit_pressure = book.best_bid_qty / (book.best_bid_qty + 0.0000001);
 
     if (bit_pressure > 2.0) {
-        Some(StrategySignal {
+        return Some(StrategySignal {
             tactic_name: "Order_Book_Pressure".to_string(),
             tactic_signal: "Buy".to_string(),
         });
     }else if (bit_pressure < 0.5) {
-        Some(StrategySignal {
+        return Some(StrategySignal {
             tactic_name: "Order_Book_Pressure".to_string(),
             tactic_signal: "Sell".to_string(),
         });
+    }else {
+        return None;
     }
-
 }
-fn Volume_spike (kline_data: KlineData, volume_history: &mut VolumeHistory){
+fn Volume_spike (kline_data: KlineData, volume_history: &mut VolumeHistory) -> Option<StrategySignal> {
     //if let (Some(kl)) = &kline_data {}
 
    //println!("Kline: volume: {}, taker_buy_base_asset_volume: {}, is_final_bar:{} ",
@@ -640,26 +676,29 @@ fn Volume_spike (kline_data: KlineData, volume_history: &mut VolumeHistory){
     //print!("Volume_spike");
 
     if !kline_data.is_final_bar {
-        return;
+        return None;
     }
     volume_history.add(kline_data.volume);
 
     if let Some(avg_volume) = volume_history.avarage(){
         if kline_data.volume > avg_volume * 1.5 {
             if kline_data.close > kline_data.open {
-                Some(StrategySignal {
+                return Some(StrategySignal {
                     tactic_name: "Volume_spike".to_string(),
                     tactic_signal: "Buy".to_string(),
                 });
             } else {
-                Some(StrategySignal {
+                return Some(StrategySignal {
                     tactic_name: "Volume_spike".to_string(),
                     tactic_signal: "Sell".to_string(),
                 });
             }
+        } else {
+            return None;
         }
+    } else {
+        return None;
     }
-    // let volume_ratio = kline_data.volume / kline_data.;
 }
 
 pub type DataCallback = extern "C" fn(*const c_char);
