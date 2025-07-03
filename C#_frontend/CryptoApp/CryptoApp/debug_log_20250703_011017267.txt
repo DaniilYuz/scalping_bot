@@ -1,0 +1,14 @@
+Microsoft.Hosting.Lifetime: Information: Now listening on: https://localhost:7270
+Microsoft.Hosting.Lifetime: Information: Now listening on: http://localhost:5082
+Microsoft.Hosting.Lifetime: Information: Application started. Press Ctrl+C to shut down.
+Microsoft.Hosting.Lifetime: Information: Hosting environment: Development
+Microsoft.Hosting.Lifetime: Information: Content root path: C:\Users\georg\Desktop\Scalping_bot\C#_frontend\CryptoApp\CryptoApp\
+CryptoApp.Pages.Index: Information: 🚀 Dashboard инициализирован в 07/03/2025 01:10:19
+CryptoApp.Pages.Index: Information: 🧹 Dashboard disposed
+CryptoApp.Pages.Index: Information: 🚀 Dashboard инициализирован в 07/03/2025 01:10:20
+CryptoApp.Pages.Index: Information: 🔥 StartBot triggered at 07/03/2025 01:10:21
+CryptoApp.Pages.Index: Information: 🧠 Tokio runtime already initialized? False
+CryptoApp.Pages.Index: Information: ✅ Bot connected successfully
+CryptoApp.Pages.Index: Information: 🛑 StopBot triggered at 07/03/2025 01:10:46
+CryptoApp.Pages.Index: Information: ✅ Bot stopped successfully
+CryptoApp.Pages.Index: Information: 🧹 Dashboard disposed

@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace CryptoApp.Interop
 {
     public class RusterBot : IDisposable
     {
+        private Process? _rustProcess;
+        private StreamWriter? _consoleOutputWriter;
+        private readonly string _consoleLogPath = $"rust_console_{DateTime.Now:yyyyMMdd_HHmmss}.log";
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void DataCallback(IntPtr jsonPtr);
 
@@ -45,6 +50,9 @@ namespace CryptoApp.Interop
                     _callbackDelegate = new DataCallback(OnDataReceivedFromRust);
 
                     _callbackHandle = GCHandle.Alloc(_callbackDelegate);
+
+                    _consoleOutputWriter = new StreamWriter(_consoleLogPath, append: true) { AutoFlush = true };
+                    Console.SetOut(_consoleOutputWriter);
 
                     IntPtr errPtr = start_bot(coins, streamTypes, ref _keepRunning, _callbackDelegate);
 
@@ -100,6 +108,9 @@ namespace CryptoApp.Interop
                 {
                     LastError = $"Stop error: {ex.Message}";
                 }
+
+                _consoleOutputWriter?.Dispose();
+                _consoleOutputWriter = null;
             }
         }
 

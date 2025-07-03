@@ -1,6 +1,17 @@
 using CryptoApp.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using System.Diagnostics;
+
+var logFilePath = $"console_log_{DateTime.Now:yyyyMMdd_HHmmssfff}.txt";
+Console.SetOut(new StreamWriter(logFilePath, append: true) { AutoFlush = true });
+
+var debugLogFile = $"debug_log_{DateTime.Now:yyyyMMdd_HHmmssfff}.txt";
+var debugListener = new System.Diagnostics.TextWriterTraceListener(debugLogFile);
+
+System.Diagnostics.Trace.Listeners.Add(debugListener);
+
+System.Diagnostics.Trace.AutoFlush = true;
 
 var builder = WebApplication.CreateBuilder(args);
 

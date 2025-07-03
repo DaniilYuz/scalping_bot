@@ -6,6 +6,7 @@
 @using Microsoft.Extensions.Logging
 @using CryptoApp.Interop
 @using System.Runtime.InteropServices
+@using System.Text
 @inject ILogger<Index> Logger
 @implements IDisposable
 
@@ -81,6 +82,7 @@
 </div>
 
 @code {
+    private DualConsoleWriter? consoleWriter;
     private System.IO.StreamWriter? logWriter;
     private readonly string logFilePath = "bot_data_log.txt";
     private bool BotConnected = false;
@@ -100,6 +102,46 @@
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool FreeLibrary(IntPtr hModule);
+
+    public class DualConsoleWriter : TextWriter
+    {
+        private readonly TextWriter _originalOut;
+        private readonly StreamWriter _logFileWriter;
+
+        public DualConsoleWriter(string filePath)
+        {
+            _originalOut = Console.Out;
+            _logFileWriter = new StreamWriter(filePath, append: true)
+                {
+                    AutoFlush = true
+                };
+        }
+
+        public override Encoding Encoding => _originalOut.Encoding;
+
+        public override void WriteLine(string? value)
+        {
+            _originalOut.WriteLine(value);
+            _logFileWriter.WriteLine(value);
+        }
+
+        public override void Write(char value)
+        {
+            _originalOut.Write(value);
+            _logFileWriter.Write(value);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _logFileWriter.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+
+
 
     private string GetLogFilePath()
     {
@@ -259,6 +301,9 @@
             }
             finally
             {
+                consoleWriter?.Dispose();
+                consoleWriter = null;
+
                 isProcessing = false;
                 StateHasChanged();
             }

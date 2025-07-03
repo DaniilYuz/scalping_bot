@@ -592,26 +592,11 @@ fn Momentum_strategy (aggTrade: AggTradeData, kline: KlineData, bookTicker: Book
             tactic_name: "Momentum".to_string(),
             tactic_signal: "Sell".to_string(),
         });
-    }else if ( (
-        kline.is_final_bar
-            && aggTrade.current_close > aggTrade.average_price
-            && aggTrade.current_close > bookTicker.best_bid
-            && aggTrade.current_close > bookTicker.best_ask
-            && kline.close > kline.open
-        ) || (
-        kline.is_final_bar
-            && aggTrade.current_close < aggTrade.average_price
-            && aggTrade.current_close < bookTicker.best_bid
-            && aggTrade.current_close < bookTicker.best_ask
-            && kline.close < kline.open
-        )
-        ){
+    }else {
         return Some(StrategySignal {
             tactic_name: "Momentum".to_string(),
-            tactic_signal: "No move".to_string(),
-        });
-    }else {
-        return None;
+            tactic_signal: "No move".to_string()
+            });
     }
 }
 
@@ -639,7 +624,10 @@ fn Mean_Reversion(aggTrade: AggTradeData, kline: KlineData) -> Option<StrategySi
             tactic_signal: "Sell".to_string(),
         });
     }else {
-        return None;
+        return Some(StrategySignal {
+            tactic_name: "Mean_Reversion".to_string(),
+            tactic_signal: "No move".to_string(),
+        });
     }
 }
 
@@ -664,7 +652,10 @@ fn Order_Book_Pressure (depth: OrderBookData, book: BookTickerData) -> Option<St
             tactic_signal: "Sell".to_string(),
         });
     }else {
-        return None;
+        return Some(StrategySignal {
+            tactic_name: "Order_Book_Pressure".to_string(),
+            tactic_signal: "Sell".to_string(),
+        });
     }
 }
 fn Volume_spike (kline_data: KlineData, volume_history: &mut VolumeHistory) -> Option<StrategySignal> {
@@ -676,7 +667,10 @@ fn Volume_spike (kline_data: KlineData, volume_history: &mut VolumeHistory) -> O
     //print!("Volume_spike");
 
     if !kline_data.is_final_bar {
-        return None;
+        return Some(StrategySignal {
+            tactic_name: "Volume_spike".to_string(),
+            tactic_signal: "No signal (bar not final)".to_string(),
+        });
     }
     volume_history.add(kline_data.volume);
 
@@ -694,10 +688,16 @@ fn Volume_spike (kline_data: KlineData, volume_history: &mut VolumeHistory) -> O
                 });
             }
         } else {
-            return None;
+            return Some(StrategySignal {
+                tactic_name: "Volume_spike".to_string(),
+                tactic_signal: "No signal (volume below threshold)".to_string(),
+            });
         }
     } else {
-        return None;
+        return Some(StrategySignal {
+            tactic_name: "Volume_spike".to_string(),
+            tactic_signal: "No signal (no volume history)".to_string(),
+        });
     }
 }
 
