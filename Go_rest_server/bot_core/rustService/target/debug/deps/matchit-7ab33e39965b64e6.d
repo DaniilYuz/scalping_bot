@@ -1,0 +1,11 @@
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libmatchit-7ab33e39965b64e6.rmeta: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\error.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\params.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\router.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\tree.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libmatchit-7ab33e39965b64e6.rlib: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\error.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\params.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\router.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\tree.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\matchit-7ab33e39965b64e6.d: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\error.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\params.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\router.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\tree.rs
+
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\lib.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\error.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\params.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\router.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\matchit-0.7.3\src\tree.rs:

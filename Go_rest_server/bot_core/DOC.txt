@@ -1,0 +1,29 @@
+                       gRPC                               тут просто передаем данные                      websocket 
+Go ----------------- data(config) --------------------> Rust --data(config) --> core(BLL) --------------data(config)---------> Binance API 
+ |                                                      |  |                      | |                                          | 
+ |---------------------data(signals)--------------------|  |------data(signals)---| |--------data(streams)---------------------|
+
+
+
+Go ---- Rust ---core -----Binance API 
+          |
+          | ---core -----Binance API 
+          | ---core -----Binance API 
+          | ---core -----Binance API 
+          | ---core -----Binance API 
+          | ---core -----Binance API
+
+gRPC:
+
+1) передаем конфиг:
+userID: id
+coreID: id
+action: start/stop/update
+data: coin1coin2
+
+2) отправляем ответ:
+    int64 userID = 1;
+    int64 coreID = 2;
+    string signals = 3;
+
+3) 

@@ -1,0 +1,10 @@
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libversion_check-e156958ee76efecd.rmeta: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\version.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\channel.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\date.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libversion_check-e156958ee76efecd.rlib: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\version.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\channel.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\date.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\version_check-e156958ee76efecd.d: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\version.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\channel.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\date.rs
+
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\lib.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\version.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\channel.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\version_check-0.9.5\src\date.rs:

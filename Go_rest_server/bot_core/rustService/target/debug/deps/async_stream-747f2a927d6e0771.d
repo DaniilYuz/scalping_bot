@@ -1,0 +1,10 @@
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libasync_stream-747f2a927d6e0771.rmeta: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\async_stream.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\next.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\yielder.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libasync_stream-747f2a927d6e0771.rlib: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\async_stream.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\next.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\yielder.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\async_stream-747f2a927d6e0771.d: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\async_stream.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\next.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\yielder.rs
+
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\lib.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\async_stream.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\next.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\async-stream-0.3.6\src\yielder.rs:

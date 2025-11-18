@@ -1,0 +1,46 @@
+syntax = "proto3";
+package proto;
+
+message StartRequest {
+    int64 userID = 1;
+    repeated string coins = 2;  // список монет для торговли
+}
+
+message UpdateRequest {
+    int64 userID = 1;
+    int64 coreID = 2;
+    repeated string coins = 3;  // обновленный список монет
+}
+
+message StopRequest {
+    int64 userID = 1;
+    int64 coreID = 2;
+}
+
+message ActionResponse {
+    int64 userID = 1;
+    int64 coreID = 2;
+    bool isDone = 3;
+    string errorMessage = 4;
+}
+
+message SignalResponse {
+    int64 userID = 1;
+    int64 coreID = 2;
+    string tacticName = 3;
+    string tacticSignal = 4;
+    int64 timestamp = 5;  // Unix timestamp
+}
+
+message UserId {
+    int64 userID = 1;
+}
+
+service CoreManagerService {
+    rpc StartCore(StartRequest) returns (ActionResponse);
+    rpc UpdateCore(UpdateRequest) returns (ActionResponse);
+    rpc StopCore(StopRequest) returns (ActionResponse);
+
+    // поток сигналов для одного пользователя
+    rpc StreamSignals(UserId) returns (stream SignalResponse);
+}

@@ -1,0 +1,11 @@
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libsocket2-d75fb9fdc97b42c7.rmeta: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockaddr.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\socket.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockref.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sys\windows.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libsocket2-d75fb9fdc97b42c7.rlib: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockaddr.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\socket.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockref.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sys\windows.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\socket2-d75fb9fdc97b42c7.d: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockaddr.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\socket.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockref.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sys\windows.rs
+
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\lib.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockaddr.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\socket.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sockref.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.10\src\sys\windows.rs:

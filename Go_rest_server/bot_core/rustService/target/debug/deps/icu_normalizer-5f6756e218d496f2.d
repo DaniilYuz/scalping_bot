@@ -1,0 +1,10 @@
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libicu_normalizer-5f6756e218d496f2.rmeta: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\properties.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\provider.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\uts46.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\libicu_normalizer-5f6756e218d496f2.rlib: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\properties.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\provider.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\uts46.rs
+
+C:\Users\georg\Desktop\Scalping_bot\Go_rest_server\bot_core\rustService\target\debug\deps\icu_normalizer-5f6756e218d496f2.d: C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\lib.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\properties.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\provider.rs C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\uts46.rs
+
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\lib.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\properties.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\provider.rs:
+C:\Users\georg\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.1.1\src\uts46.rs:
